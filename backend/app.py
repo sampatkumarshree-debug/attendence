@@ -175,8 +175,22 @@ model_manager = ModelManager()
 
 # Flask app
 app = Flask(__name__)
-# Enable CORS for all domains, specifically allowing Authorization headers and methods
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
+CORS(app)
+
+# Manual CORS headers — guaranteed to work with all browsers for cross-origin requests
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-User-Type, X-User-Email'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    return response
+
+# Handle OPTIONS preflight requests globally
+@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
+@app.route('/<path:path>', methods=['OPTIONS'])
+def options_handler(path):
+    return '', 204
+
 # Configure Flask app with database and model instances
 app.config["DB"] = db
 app.config["COLLECTION_NAME"] = COLLECTION_NAME
