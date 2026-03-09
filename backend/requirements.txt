@@ -10,4 +10,4 @@ tensorflow
 Pillow
 openpyxl
 gunicorn
-tf-keras
+tf-kerasscipy

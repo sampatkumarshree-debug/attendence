@@ -6,9 +6,6 @@ import numpy as np
 from flask import Blueprint, request, jsonify, current_app
 from bson.objectid import ObjectId
 from datetime import datetime
-from PIL import Image
-from scipy.spatial.distance import cosine
-from deepface import DeepFace
 import logging
 import time
 
@@ -24,6 +21,7 @@ attendance_session_bp = Blueprint(
 # ----------------- OPTIMIZED Helper Functions ----------------- #
 
 def read_image_from_base64_optimized(image_b64: str, target_size=(640, 480)):
+    from PIL import Image
     """Convert base64 image to RGB numpy array with optimization"""
     if image_b64.startswith("data:"):
         image_b64 = image_b64.split(",", 1)[1]
@@ -61,6 +59,8 @@ def detect_faces_optimized(rgb_image, detector):
     return faces
 
 def extract_embedding_optimized(face_rgb):
+    from PIL import Image
+    from deepface import DeepFace
     """Extract embedding using preloaded DeepFace model"""
     try:
         if face_rgb.shape[0] < 40 or face_rgb.shape[1] < 40:
@@ -142,6 +142,7 @@ class AttendanceEmbeddingCache:
 attendance_cache = AttendanceEmbeddingCache()
 
 def find_best_match_optimized_attendance(query_embedding, students_col, session_doc, threshold=0.6):
+    from scipy.spatial.distance import cosine
     """Optimized student matching for attendance with session-specific filtering"""
     # Build filter for students in this session's class
     student_filter = {"embeddings": {"$exists": True, "$ne": None}}
@@ -355,6 +356,8 @@ def mark_attendance_with_duplicate_prevention():
         # Search ALL students (same as demo session)
         students = list(students_col.find({"embeddings": {"$exists": True, "$ne": None}}))
         results = []
+
+        from scipy.spatial.distance import cosine
 
         for f in faces:
             emb = extract_embedding_optimized(f["face"])
