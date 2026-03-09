@@ -185,11 +185,16 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
     return response
 
-# Handle OPTIONS preflight requests globally
-@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
-@app.route('/<path:path>', methods=['OPTIONS'])
-def options_handler(path):
-    return '', 204
+# Handle OPTIONS preflight requests via before_request (avoids 405 conflict with POST routes)
+@app.before_request
+def handle_options():
+    from flask import request as req, make_response
+    if req.method == 'OPTIONS':
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-User-Type, X-User-Email'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        return response
 
 # Configure Flask app with database and model instances
 app.config["DB"] = db
