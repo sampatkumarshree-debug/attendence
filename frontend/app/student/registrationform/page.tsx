@@ -127,14 +127,14 @@ export default function StudentRegistrationForm() {
 
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl border-b-2 border-slate-200 shadow-lg relative z-10">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
-              <User className="w-6 h-6 text-white" />
+        <div className="px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 sm:p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+              <User className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Student Registration</h1>
-              <p className="text-slate-600 text-sm font-medium">
+              <h1 className="text-lg sm:text-2xl font-bold text-slate-900">Student Registration</h1>
+              <p className="text-slate-600 text-xs sm:text-sm font-medium">
                 Step {step} of 2: {step === 1 ? "Student Details" : "Photo Capture"}
               </p>
               <div className="flex items-center gap-2 mt-1">
@@ -145,7 +145,7 @@ export default function StudentRegistrationForm() {
           </div>
           <button
             onClick={() => router.push("/dashboard")}
-            className="flex items-center gap-2 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border-2 border-slate-300 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-semibold"
+            className="flex items-center gap-2 px-3 py-2 sm:px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl border-2 border-slate-300 hover:border-slate-400 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl font-semibold text-sm"
           >
             <Home className="w-4 h-4" />
             <span className="hidden sm:block">Dashboard</span>
@@ -153,24 +153,24 @@ export default function StudentRegistrationForm() {
         </div>
       </header>
 
-      <main className="p-4 relative z-10 max-h-[calc(100vh-120px)] overflow-y-auto">
+      <main className="p-3 sm:p-4 relative z-10 max-h-[calc(100vh-120px)] overflow-y-auto">
         <div className="max-w-7xl mx-auto">
           {step === 1 ? (
-            <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-6 border-2 border-slate-200 shadow-2xl">
+            <div className="bg-white/90 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border-2 border-slate-200 shadow-2xl">
               {/* Compact Form Header */}
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl mb-3">
+              <div className="text-center mb-4 sm:mb-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl mb-2 sm:mb-3">
                   <User className="w-5 h-5 text-blue-600" />
-                  <span className="text-blue-700 font-semibold">Student Information</span>
+                  <span className="text-blue-700 font-semibold text-sm sm:text-base">Student Information</span>
                 </div>
-                <h2 className="text-3xl font-bold text-slate-900 mb-2">Register New Student</h2>
-                <p className="text-slate-600 text-base leading-relaxed">
+                <h2 className="text-xl sm:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">Register New Student</h2>
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                   Fill in all required student details to create a comprehensive profile
                 </p>
               </div>
 
               <form onSubmit={handleFormSubmit}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                   {/* Personal Details Card */}
                   <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border-2 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300">
                     <div className="flex items-center gap-3 mb-5">

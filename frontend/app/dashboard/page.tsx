@@ -37,15 +37,15 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
       {/* Header */}
       <header className="bg-white/90 backdrop-blur-xl border-b border-slate-200 shadow-sm">
-        <div className="max-w-5xl mx-auto px-6 py-5 flex items-center gap-4">
-          <div className="p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
-            <Camera className="w-7 h-7 text-white" />
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center gap-3">
+          <div className="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl shadow-lg">
+            <Camera className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-800 tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">
               AI Attendance System
             </h1>
-            <p className="text-slate-500 text-sm font-medium">
+            <p className="text-slate-500 text-xs sm:text-sm font-medium">
               Face Recognition Attendance
             </p>
           </div>
@@ -53,16 +53,16 @@ export default function DashboardPage() {
       </header>
 
       {/* Main */}
-      <main className="max-w-5xl mx-auto px-6 py-14">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-14">
         {/* Intro */}
-        <div className="text-center mb-12">
-          <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
+        <div className="text-center mb-8 sm:mb-12">
+          <span className="inline-block bg-blue-100 text-blue-700 text-xs font-semibold px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 sm:mb-4">
             AI / Deep Learning
           </span>
-          <h2 className="text-4xl font-extrabold text-slate-800 mb-4 tracking-tight">
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-800 mb-3 sm:mb-4 tracking-tight">
             Face Recognition Attendance
           </h2>
-          <p className="text-slate-500 text-lg max-w-xl mx-auto leading-relaxed">
+          <p className="text-slate-500 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
             Automated attendance marking using real-time facial recognition with DeepFace and MTCNN.
           </p>
         </div>
