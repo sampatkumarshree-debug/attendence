@@ -1,0 +1,12 @@
+flask
+flask-cors
+flask-bcrypt
+pymongo
+python-dotenv
+numpy
+deepface
+mtcnn
+tensorflow
+Pillow
+openpyxl
+gunicorn
