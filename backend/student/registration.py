@@ -2,18 +2,18 @@ import os
 from flask import Blueprint, request, jsonify, current_app
 import time
 import base64
-import numpy as np
-from PIL import Image
-import io
-from deepface import DeepFace
-from pymongo import MongoClient
-from bson.objectid import ObjectId
 import logging
 
 student_registration_bp = Blueprint("student_registration", __name__)
 logger = logging.getLogger(__name__)
 
+# All heavy imports (PIL, numpy, deepface) are done LAZILY inside functions
+# This ensures the blueprint always loads successfully at startup
+
 def read_image_from_bytes(b):
+    from PIL import Image
+    import numpy as np
+    import io
     img = Image.open(io.BytesIO(b)).convert('RGB')
     return np.array(img)
 
@@ -35,13 +35,16 @@ def detect_faces_rgb(rgb_image):
     return faces
 
 def extract_embedding(face_rgb):
+    from deepface import DeepFace
+    from PIL import Image
+    import numpy as np
     try:
         face_pil = Image.fromarray(face_rgb.astype('uint8')).resize((160, 160))
         face_array = np.array(face_pil)
         rep = DeepFace.represent(face_array, model_name='Facenet512', detector_backend='skip')
         return np.array(rep[0]['embedding'], dtype=float)
     except Exception as e:
-        print(f"Embedding error: {e}")
+        logger.error(f"Embedding error: {e}")
         return None
 
 @student_registration_bp.route('/api/register-student', methods=['POST'])
@@ -50,28 +53,24 @@ def register_student():
     if not data:
         return jsonify({"success": False, "error": "Invalid JSON data"}), 400
 
-    # Get logged-in user info from headers
-    # Simplified: only validate fields and ensure uniqueness of studentId and email
     db = current_app.config.get("DB")
     students_col = db.students
 
-    # Check required fields
     required_fields = ['studentName', 'studentId', 'department', 'year', 'division', 'semester', 'email', 'phoneNumber', 'images']
     for field in required_fields:
         if not data.get(field):
             return jsonify({"success": False, "error": f"{field} is required"}), 400
 
-    # Check uniqueness of studentId and email
     if students_col.find_one({'studentId': data['studentId']}):
         return jsonify({"success": False, "error": "Student ID already exists"}), 400
     if students_col.find_one({'email': data['email']}):
         return jsonify({"success": False, "error": "Email already registered"}), 400
 
-    # Validate images
     images = data.get('images')
     if not isinstance(images, list) or len(images) != 5:
         return jsonify({"success": False, "error": "Exactly 5 images are required"}), 400
 
+    import numpy as np
     embeddings = []
     for idx, img_b64 in enumerate(images):
         try:

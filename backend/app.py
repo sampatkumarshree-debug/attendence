@@ -13,27 +13,37 @@ import numpy as np
 # Optional student/teacher blueprints
 try:
     from student.registration import student_registration_bp
-except ImportError:
+    logger.info("✅ student.registration imported")
+except Exception as e:
+    logger.error(f"❌ Failed to import student.registration: {e}")
     student_registration_bp = None
 
 try:
     from student.updatedetails import student_update_bp
-except ImportError:
+    logger.info("✅ student.updatedetails imported")
+except Exception as e:
+    logger.error(f"❌ Failed to import student.updatedetails: {e}")
     student_update_bp = None
 
 try:
     from student.demo_session import demo_session_bp
-except ImportError:
+    logger.info("✅ student.demo_session imported")
+except Exception as e:
+    logger.error(f"❌ Failed to import student.demo_session: {e}")
     demo_session_bp = None
 
 try:
     from student.view_attendance import attendance_bp
-except ImportError:
+    logger.info("✅ student.view_attendance imported")
+except Exception as e:
+    logger.error(f"❌ Failed to import student.view_attendance: {e}")
     attendance_bp = None
 
 try:
     from teacher.attendance_records import attendance_session_bp
-except ImportError:
+    logger.info("✅ teacher.attendance_records imported")
+except Exception as e:
+    logger.error(f"❌ Failed to import teacher.attendance_records: {e}")
     attendance_session_bp = None
 
 # Logging setup
