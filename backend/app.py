@@ -175,8 +175,8 @@ model_manager = ModelManager()
 
 # Flask app
 app = Flask(__name__)
-CORS(app)
-
+# Enable CORS for all domains, specifically allowing Authorization headers and methods
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 # Configure Flask app with database and model instances
 app.config["DB"] = db
 app.config["COLLECTION_NAME"] = COLLECTION_NAME
