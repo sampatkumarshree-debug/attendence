@@ -3,8 +3,7 @@ import os
 import time
 import logging
 import threading
-from flask import Flask
-from flask_cors import CORS
+from flask import Flask, make_response
 from pymongo import MongoClient
 from dotenv import load_dotenv
 from flask_bcrypt import Bcrypt
@@ -186,26 +185,28 @@ model_manager = ModelManager()
 
 # Flask app
 app = Flask(__name__)
-CORS(app)
+# NOTE: NOT using flask-cors CORS(app) — it conflicts with the manual hooks below
 
-# Manual CORS headers — guaranteed to work with all browsers for cross-origin requests
+# Bulletproof manual CORS: always inject headers, on every response including errors
 @app.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-User-Type, X-User-Email'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Max-Age'] = '3600'
     return response
 
-# Handle OPTIONS preflight requests via before_request (avoids 405 conflict with POST routes)
+# Handle OPTIONS preflight — must return 200 with CORS headers, not 404/405
 @app.before_request
 def handle_options():
-    from flask import request as req, make_response
+    from flask import request as req
     if req.method == 'OPTIONS':
-        response = make_response()
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-User-Type, X-User-Email'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        return response
+        resp = make_response('', 200)
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-User-Type, X-User-Email'
+        resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        resp.headers['Access-Control-Max-Age'] = '3600'
+        return resp
 
 # Configure Flask app with database and model instances
 app.config["DB"] = db
