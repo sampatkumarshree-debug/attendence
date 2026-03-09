@@ -10,6 +10,10 @@ from dotenv import load_dotenv
 from flask_bcrypt import Bcrypt
 import numpy as np
 
+# Logging setup MUST be first so it is available for blueprint import error reporting
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
 # Optional student/teacher blueprints
 try:
     from student.registration import student_registration_bp
@@ -46,9 +50,6 @@ except Exception as e:
     logger.error(f"❌ Failed to import teacher.attendance_records: {e}")
     attendance_session_bp = None
 
-# Logging setup
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
 
 load_dotenv()
 
